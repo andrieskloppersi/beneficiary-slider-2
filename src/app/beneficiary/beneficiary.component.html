@@ -1,0 +1,51 @@
+<div class="livin-beneficiaries-payout">
+  <div class="livin-beneficiaries-payout__title title">
+    <h4 class="title__h4">Policy payout</h4>
+    <p class="title__p">
+      Adjust the sliders to show us what percentage of your policy we should pay
+      out to each of your beneficiaries
+    </p>
+  </div>
+  <ng-container
+    *ngIf="beneficiaries$ | async as beneficiaries; else loadingDiv"
+  >
+    <div
+      *ngIf="beneficiaries.length > 0 && !loading; else loadingDiv"
+      class="livin-beneficiaries-payout__sliders"
+    >
+      <div
+        *ngFor="
+          let beneficiary of beneficiaries;
+          let i = index;
+          trackBy: trackBeneficiaries
+        "
+        class="
+          livin-beneficiaries-payout__slider
+          livin-beneficiary-payout-slider
+        "
+      >
+        <div class="livin-beneficiary-payout-slider__name">
+          <p>{{ beneficiary.Name }}</p>
+        </div>
+        <div class="livin-beneficiary-payout-slider__input">
+          <input
+            [attr.data-beneficiary-input]="'beneficiary-' + i"
+            [value]="beneficiary.Percentage"
+            (input)="change(i, $event)"
+            type="range"
+          />
+          <label>{{ beneficiary.Percentage }}%</label>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loadingDiv>
+    <div class="loader">
+      <p>...</p>
+    </div>
+  </ng-template>
+  <!-- <button (click)="reset()">Reset</button> -->
+  <div class="livin-beneficiaries-payout__continue">
+    <button (click)="continue()">Continue</button>
+  </div>
+</div>
