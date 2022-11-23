@@ -108,12 +108,16 @@ export class BeneficiariesPayoutComponent implements OnInit {
       .pipe(
         map((v) => v.beneficiaries),
         tap((v) => {
+          this.allowChange = false;
           for (let i = 0; i < v.length; i++) {
             const inputRef: HTMLInputElement | null = document.querySelector(
               `input[data-beneficiary-input="beneficiary-${i}"]`
             );
             if (inputRef) {
               inputRef.value = v[i].Percentage.toString();
+            }
+            if (i === v.length - 1) {
+              this.allowChange = true;
             }
           }
         })
